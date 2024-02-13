@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
+#Parameters
 k = 0.1
 A = 1 
 d = 0.1 
@@ -10,32 +10,31 @@ dt = 0.01
 t_final = 100
 
 #initial conditions
-T_0 = 500 
+T_initial = 500 
 
 #list to store the results
 t_list = [0]
-T_list = [T_0]
-#Heat_input = []
+T_list = [T_initial]
+#Heat_value = []
 
-# function to calculate the rate of heat transfer dQ/dt
+# the function to deduce the rate of heat transfer for dQ/dt
 def transfer_rate(T, T_e):
     return -k * A * (T - T_e) / d
 
-
-for i in range(int(t_final/dt)):
     #update time
+    for i in range(int(t_final/dt)):
     t = (i + 1) * dt
     t_list.append(t)
     
-    #heat change calculation 
+    # rate of heat change calculation 
     dQdt = transfer_rate(T_list[i - 1], T_e)
     T = T_list[-1] + dQdt * dt
     T_list.append(T)
     
-    print('t = {:.2f}s; T = {:.3f}˚C; dQ(t) = {:.3f}J/s'.format(t, T, dQdt))
+    print(' T = {:.3f}˚C;t = {:.2f}s; dQ(t) = {:.3f}J/s'.format(T, t, dQdt))
     
     
-#Temperature Graph plotting
+# A graph of temperature against time
 plt.plot(t_list, T_list)
 plt.xlabel('Time')
 plt.ylabel('Temperature')
@@ -44,26 +43,26 @@ plt.grid(False)
 plt.show()
 
 # Calculation of Cp/V
-Heat_input = np.linspace(0, max(T_list) - T_e, t_final)
-temperature = np.zeros_like(Heat_input)
-for i, Q in enumerate(Heat_input):
+Heat_value = np.linspace(0, max(T_list) - T_e, t_final)
+temperature = np.zeros_like(Heat_value)
+for i, Q in enumerate(Heat_value):
     T = Q + T_e
     temperature[i] = T
     
     #print(temperature[i])
 
 #Temperature and heat graph plotting
-plt.plot(Heat_input, temperature)
-plt.xlabel('Heat Input (Q)')
+plt.plot(Heat_value, temperature)
+plt.xlabel('Heat_value (Q)')
 plt.ylabel('Temperature (T)')
-plt.title('A graph of Temperature against Heat Input')
+plt.title('A graph of Temperature against Heat_value')
 plt.grid(False)
 plt.show()
 
 
 # Slope for the graph of Temperature against Heat Input
-slope, _ = np.polyfit(Heat_input, temperature, 1)
+slope, _ = np.polyfit(Heat_value, temperature, 1)
 Cp_V = slope / A
 
 print("")
-print("Specific heat capacity of the metal is: ", Cp_V)
+print("Specific heat capacity of the metal is given by : ", Cp_V)
